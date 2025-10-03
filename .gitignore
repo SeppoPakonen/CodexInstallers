@@ -1,0 +1,20 @@
+# Large artifacts — Android Gentoo Prefix
+installer-android-gentoo-prefix/builds/
+installer-android-gentoo-prefix/toolchains/
+installer-android-gentoo-prefix/toolchain-android/
+installer-android-gentoo-prefix/downloads/
+installer-android-gentoo-prefix/trash/
+installer-android-gentoo-prefix/alpine-minirootfs-*.tar.*
+installer-android-gentoo-prefix/bash-static-*
+installer-android-gentoo-prefix/proot.aarch64
+
+# Large artifacts — iMac installer
+installer-imac/rEFIt-0.14
+installer-imac/rEFIt-0.14.cdr
+installer-imac/rEFIt-0.14.cdr.gz
+installer-imac/tmp-esp/
+
+# Common editor/OS junk
+.DS_Store
+*.swp
+*.swo

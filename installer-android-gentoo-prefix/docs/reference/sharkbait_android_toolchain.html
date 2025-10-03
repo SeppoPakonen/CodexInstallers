@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html class="client-nojs" lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<title>Android/SharkBait/Building a toolchain for aarch64-linux-android - Gentoo wiki</title>
+<script>document.documentElement.className="client-js";RLCONF={"wgBreakFrames":!1,"wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgRequestId":"b5d4706d9bb6de25844ffe96","wgCSPNonce":!1,"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":!1,"wgNamespaceNumber":0,"wgPageName":"Android/SharkBait/Building_a_toolchain_for_aarch64-linux-android","wgTitle":"Android/SharkBait/Building a toolchain for aarch64-linux-android","wgCurRevisionId":1075940,"wgRevisionId":1075940,"wgArticleId":230558,"wgIsArticle":!0,"wgIsRedirect":!1,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["Android"],"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgRelevantPageName":"Android/SharkBait/Building_a_toolchain_for_aarch64-linux-android","wgRelevantArticleId":230558,"wgIsProbablyEditable":
+!1,"wgRelevantPageIsProbablyEditable":!1,"wgRestrictionEdit":[],"wgRestrictionMove":[],"wgULSCurrentAutonym":"English","wgPageFormsTargetName":null,"wgPageFormsAutocompleteValues":[],"wgPageFormsAutocompleteOnAllChars":!1,"wgPageFormsFieldProperties":[],"wgPageFormsCargoFields":[],"wgPageFormsDependentFields":[],"wgPageFormsCalendarValues":[],"wgPageFormsCalendarParams":[],"wgPageFormsCalendarHTML":null,"wgPageFormsGridValues":[],"wgPageFormsGridParams":[],"wgPageFormsContLangYes":null,"wgPageFormsContLangNo":null,"wgPageFormsContLangMonths":[],"wgPageFormsHeightForMinimizingInstances":800,"wgPageFormsShowOnSelect":[],"wgPageFormsScriptPath":"/extensions/PageForms","edgValues":null,"wgPageFormsEDSettings":null,"wgAmericanDates":!1,"srfFilteredConfig":null,"wgULSPosition":"personal","wgULSisCompactLinksEnabled":!0};RLSTATE={"site.styles":"ready","noscript":"ready","user.styles":"ready","user":"ready","user.options":"loading","ext.pygments":"ready","mediawiki.toc.styles":
+"ready","ext.smw.style":"ready","ext.smw.tooltip.styles":"ready","ext.uls.pt":"ready","ext.srf.styles":"ready","mediawiki.skinning.interface":"ready","mediawiki.skinning.content.externallinks":"ready","skins.tyrian.styles":"ready","skins.tyrian.icons":"ready"};RLPAGEMODULES=["ext.smw.style","ext.smw.tooltips","smw.entityexaminer","site","mediawiki.page.startup","mediawiki.page.ready","mediawiki.toc","ext.uls.compactlinks","ext.uls.interface"];</script>
+<script>(RLQ=window.RLQ||[]).push(function(){mw.loader.implement("user.options@1hzgi",function($,jQuery,require,module){/*@nomin*/mw.user.tokens.set({"patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});
+});});</script>
+<link rel="stylesheet" href="/load.php?lang=en&amp;modules=ext.pygments%7Cext.smw.style%7Cext.smw.tooltip.styles%7Cext.uls.pt%7Cmediawiki.skinning.content.externallinks%7Cmediawiki.skinning.interface%7Cmediawiki.toc.styles%7Cskins.tyrian.icons%2Cstyles&amp;only=styles&amp;skin=tyrian"/>
+<link rel="stylesheet" href="/load.php?lang=en&amp;modules=ext.srf.styles&amp;only=styles&amp;skin=tyrian"/>
+<script async="" src="/load.php?lang=en&amp;modules=startup&amp;only=scripts&amp;raw=1&amp;skin=tyrian"></script>
+<link rel="stylesheet" href="https://assets.gentoo.org/tyrian/bootstrap.min.css"/><link rel="stylesheet" href="https://assets.gentoo.org/tyrian/tyrian.min.css"/><style>#mw-indicator-mw-helplink {display:none;}</style>
+<meta name="ResourceLoaderDynamicStyles" content=""/>
+<link rel="stylesheet" href="/load.php?lang=en&amp;modules=site.styles&amp;only=styles&amp;skin=tyrian"/>
+<meta name="generator" content="MediaWiki 1.35.14"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="#54487a"/>
+<link rel="alternate" type="application/rdf+xml" title="Android/SharkBait/Building a toolchain for aarch64-linux-android" href="/index.php?title=Special:ExportRDF/Android/SharkBait/Building_a_toolchain_for_aarch64-linux-android&amp;xmlmime=rdf"/>
+<link rel="shortcut icon" href="https://www.gentoo.org/favicon.ico"/>
+<link rel="search" type="application/opensearchdescription+xml" href="/opensearch_desc.php" title="Gentoo Wiki (en)"/>
+<link rel="EditURI" type="application/rsd+xml" href="https://wiki.gentoo.org/api.php?action=rsd"/>
+<link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/"/>
+<!--[if lt IE 9]><script src="/resources/lib/html5shiv/html5shiv.js"></script><![endif]-->
+</head>
+<body class="mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-subject page-Android_SharkBait_Building_a_toolchain_for_aarch64-linux-android rootpage-Android skin-tyrian action-view">	<div class="mw-jump sr-only">
+		Jump to:		<a href="#top">content</a>
+	</div>
+	<header>
+		<div class="site-title">
+			<div class="container">
+				<div class="row">
+					<div class="site-title-buttons">
+						<div class="btn-group btn-group-sm">
+							<a href="https://get.gentoo.org/" role="button" class="btn get-gentoo"><span class="fa fa-fw fa-download"></span> <strong>Get Gentoo!</strong></a>
+							<div class="btn-group btn-group-sm">
+								<a class="btn gentoo-org-sites dropdown-toggle" data-toggle="dropdown" data-target="#" href="#">
+									<span class="fa fa-fw fa-map-o"></span> <span class="hidden-xs">gentoo.org sites</span> <span class="caret"></span>
+								</a>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li><a href="https://www.gentoo.org/" title="Gentoo's main website"><span class="fa fa-home fa-fw"></span> gentoo.org</a></li>
+									<li><a href="https://wiki.gentoo.org/" title="Find and contribute documentation"><span class="fa fa-file-text-o fa-fw"></span> Wiki</a></li>
+									<li><a href="https://bugs.gentoo.org/" title="Discover and report issues with Gentoo"><span class="fa fa-bug fa-fw"></span> Bugs</a></li>
+									<li><a href="https://packages.gentoo.org/" title="Find software to install"><span class="fa fa-hdd-o fa-fw"></span> Packages</a></li>
+									<li><a href="https://forums.gentoo.org/" title="Discuss with the community"><span class="fa fa-comments-o fa-fw"></span> Forums</a></li>
+									<li class="divider"></li>
+									<li><a href="https://planet.gentoo.org/" title="Find out what's going on in the dev community"><span class="fa fa-rss fa-fw"></span> Planet</a></li>
+									<li><a href="https://archives.gentoo.org/" title="Read up on past discussions"><span class="fa fa-archive fa-fw"></span> Archives</a></li>
+									<li><a href="https://devmanual.gentoo.org/" title="Read the development guide"><span class="fa fa-book fa-fw"></span> Devmanual</a></li>
+									<li><a href="https://gitweb.gentoo.org/" title="Browse our source code in Gitweb"><span class="fa fa-code fa-fw"></span> Gitweb</a></li>
+									<li class="divider"></li>
+									<li><a href="https://infra-status.gentoo.org/" title="Get updates on the services provided by the Gentoo infra team"><span class="fa fa-server fa-fw"></span> Infra status</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="logo">
+						<a href="/" title="Back to the homepage" class="site-logo">
+							<img src="https://assets.gentoo.org/tyrian/site-logo.png"  alt="Gentoo Linux Logo" srcset="https://assets.gentoo.org/tyrian/site-logo.svg">
+						</a>
+						<span class="site-label">Wiki</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<nav class="tyrian-navbar" role="navigation">
+			<div class="container">
+				<div class="row">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					</div>
+					<div class="collapse navbar-collapse navbar-main-collapse">
+						<ul class="nav navbar-nav">
+							<li id="n-mainpage-description"><a href="/wiki/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li><li id="n-recentchanges"><a href="/wiki/Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li><li id="n-help"><a href="/wiki/Special:MyLanguage/Help:Contents" title="The place to find out">Help</a></li><li id="n-Contribute.21"><a href="/wiki/Gentoo_Wiki:Contributor%27s_guide">Contribute!</a></li>			<li class="dropdown">
+				<a href="/wiki/Gentoo_Wiki:Menu-Documentation" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Documentation <span class="caret"></span></a>
+				<ul class="dropdown-menu" role="menu"><li id="n-Gentoo-Handbook"><a href="/wiki/Handbook:Main_Page">Gentoo Handbook</a></li><li id="n-Gentoo-FAQ"><a href="/wiki/FAQ">Gentoo FAQ</a></li><li role="presentation" class="divider"></li><li id="n-Core-system"><a href="/wiki/Category:Core_system">Core system</a></li><li id="n-Hardware"><a href="/wiki/Category:Hardware">Hardware</a></li><li id="n-Software"><a href="/wiki/Category:Software">Software</a></li><li id="n-Desktop"><a href="/wiki/Category:Desktop">Desktop</a></li><li id="n-Server-.26-Security"><a href="/wiki/Category:Server_and_Security">Server &amp; Security</a></li><li id="n-Project-.26-Community"><a href="/wiki/Category:Project_and_Community">Project &amp; Community</a></li><li role="presentation" class="divider"></li><li id="n-Gentoo-Projects"><a href="/wiki/Project:Gentoo">Gentoo Projects</a></li>				</ul>
+			</li>						</ul>
+						<ul class="nav navbar-nav navbar-right hidden-xs">
+									<li class="dropdown">
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-cog"></i> Tools <span class="caret"></span></a>
+			<ul class="dropdown-menu" role="menu">
+				<li id="t-whatlinkshere"><a href="/wiki/Special:WhatLinksHere/Android/SharkBait/Building_a_toolchain_for_aarch64-linux-android" title="A list of all wiki pages that link here [j]" accesskey="j">What links here</a></li><li id="t-recentchangeslinked"><a href="/wiki/Special:RecentChangesLinked/Android/SharkBait/Building_a_toolchain_for_aarch64-linux-android" rel="nofollow" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li><li id="t-specialpages"><a href="/wiki/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li><li id="t-print"><a href="javascript:print();" rel="alternate" title="Printable version of this page [p]" accesskey="p">Printable version</a></li><li id="t-permalink"><a href="/index.php?title=Android/SharkBait/Building_a_toolchain_for_aarch64-linux-android&amp;oldid=1075940" title="Permanent link to this revision of the page">Permanent link</a></li><li id="t-info"><a href="/index.php?title=Android/SharkBait/Building_a_toolchain_for_aarch64-linux-android&amp;action=info" title="More information about this page">Page information</a></li><li id="t-smwbrowselink"><a href="/wiki/Special:Browse/:Android-2FSharkBait-2FBuilding-5Fa-5Ftoolchain-5Ffor-5Faarch64-2Dlinux-2Dandroid" rel="search">Browse properties</a></li>			</ul>
+		</li>
+			<li class="dropdown">
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+				<span class="fa fa-user" aria-label="Personal tools"></span>
+				User				<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu" role="menu">
+				<li id="pt-uls" class="active"><a href="#" class="uls-trigger">English</a></li><li id="pt-createaccount"><a href="/index.php?title=Special:CreateAccount&amp;returnto=Android%2FSharkBait%2FBuilding+a+toolchain+for+aarch64-linux-android" title="You are encouraged to create an account and log in; however, it is not mandatory">Create account</a></li><li id="pt-login"><a href="/index.php?title=Special:UserLogin&amp;returnto=Android%2FSharkBait%2FBuilding+a+toolchain+for+aarch64-linux-android" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o">Log in</a></li>			</ul>
+		</li>
+								</ul>
+					</div>
+				</div>
+			</div>
+		</nav>
+		
+		<nav class="navbar navbar-grey navbar-stick" id="wiki-actions" role="navigation">
+			<div class="container"><div class="row">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#gw-toolbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+				</div>
+				<div class="collapse navbar-collapse" id="gw-toolbar">
+					<ul class="nav navbar-nav">
+					<li id="ca-nstab-main" class="selected active"><a href="/wiki/Android/SharkBait/Building_a_toolchain_for_aarch64-linux-android" title="View the content page [c]" accesskey="c">Page</a></li><li id="ca-talk" class="new"><a href="/index.php?title=Talk:Android/SharkBait/Building_a_toolchain_for_aarch64-linux-android&amp;action=edit&amp;redlink=1" rel="discussion" title="Discussion about the content page (page does not exist) [t]" accesskey="t">Discussion</a></li>					</ul>
+							<form action="/index.php" id="searchform" class="navbar-form navbar-right" role="search">
+			<input type='hidden' name="title" value="Special:Search"/>
+
+				<div class="input-group">
+					<input type="search" name="search" placeholder="Search" title="Search Gentoo Wiki [f]" accesskey="f" id="searchInput" class="form-control"/>					<div class="input-group-btn"><input type="submit" name="go" value="Go" title="Go to a page with this exact name if it exists" id="searchGoButton" class="searchButton btn btn-default"/><input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton btn btn-default"/></div>
+				</div>
+		</form>
+						<ul class="nav navbar-nav navbar-right hidden-xs">
+					<li id="ca-viewsource"><a href="/index.php?title=Android/SharkBait/Building_a_toolchain_for_aarch64-linux-android&amp;action=edit" title="This page is protected.&#10;You can view its source [e]" accesskey="e">View source</a></li><li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">more <span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+					<li id="ca-history"><a href="/index.php?title=Android/SharkBait/Building_a_toolchain_for_aarch64-linux-android&amp;action=history" title="Past revisions of this page [h]" accesskey="h">History</a></li>							</ul>
+						</li>
+					</ul>
+				</div>
+			</div></div>
+		</nav>
+		</header>
+	
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div id="content" class="mw-body" role="main">
+						<a id="top"></a>
+						
+						<h1 id="firstHeading" class="first-header" lang="en">
+							<span dir="auto">Android/SharkBait/Building a toolchain for aarch64-linux-android</span>
+						</h1>
+
+						<div id="bodyContent" class="mw-body-content">
+							<div id="siteSub">From Gentoo Wiki</div>
+							<div id="contentSub">
+								<span class="subpages">&lt; <a href="/wiki/Android" title="Android">Android</a>&lrm; | <a href="/wiki/Android/SharkBait" title="Android/SharkBait">SharkBait</a></span>							</div>
+												                <div id="jump-to-nav"></div>
+					                <a class="mw-jump-link" href="#mw-head">Jump to:navigation</a>
+					                <a class="mw-jump-link" href="#searchInput">Jump to:search</a>
+
+							<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><div class="mw-parser-output"><p>To build the Android Platform, we need a toolchain that can produce executables that link correctly against Android's <span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">libc</span>, Bionic. To achieve this, a toolchain targeting <span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">aarch64-linux-android</span> (and <span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">arm-linux-androideabi</span>) is needed. This article aims to provide a step-by-step guide for reproducing the desired toolchain on all architecture that GCC supports running on, including AArch64, which my GSoC project needs. Unfinished work on this topic is documented at the end of this article.
+</p>
+<div id="toc" class="toc" role="navigation" aria-labelledby="mw-toc-heading"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none" /><div class="toctitle" lang="en" dir="ltr"><h2 id="mw-toc-heading">Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#Step_0_--_Clone_source_and_set_up_environment_variables"><span class="tocnumber">1</span> <span class="toctext">Step 0 -- Clone source and set up environment variables</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#Step_1_--_Build_and_install_binutils"><span class="tocnumber">2</span> <span class="toctext">Step 1 -- Build and install binutils</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="#Step_2_--_Install_prebuilt_libc_.26_headers"><span class="tocnumber">3</span> <span class="toctext">Step 2 -- Install prebuilt libc &amp; headers</span></a></li>
+<li class="toclevel-1 tocsection-4"><a href="#Step_3_--_Build_and_install_GCC"><span class="tocnumber">4</span> <span class="toctext">Step 3 -- Build and install GCC</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="#Step_4_--_Build_and_verify_.22Hello.2C_world.21.22"><span class="tocnumber">5</span> <span class="toctext">Step 4 -- Build and verify &quot;Hello, world!&quot;</span></a></li>
+<li class="toclevel-1 tocsection-6"><a href="#What_else.3F"><span class="tocnumber">6</span> <span class="toctext">What else?</span></a></li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="Step_0_--_Clone_source_and_set_up_environment_variables">Step 0 -- Clone source and set up environment variables</span></h2>
+<p>Clone the following repositories which hold Google's modifications to the GCC toolchain for Android target:
+</p>
+<ul><li><a rel="nofollow" class="external text" href="https://android.googlesource.com/toolchain/binutils">Binutils</a></li>
+<li><a rel="nofollow" class="external text" href="https://android.googlesource.com/platform/bionic">Bionic</a></li>
+<li><a rel="nofollow" class="external text" href="https://android.googlesource.com/toolchain/gcc">GCC</a></li></ul>
+<p>The rest of this article assumes that <span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">$PWD</span> is in the corresponding project for each step.
+</p><p>Export the environment variables to get the paths right:
+</p>
+<div class="cmd-box"><div><code style="color: #4E9A06; user-select: none; font-weight: bold;">user <span style="color:royalblue;">$</span></code><code>export TARGET=aarch64-linux-android</code></div><div><code style="color: #4E9A06; user-select: none; font-weight: bold;">user <span style="color:royalblue;">$</span></code><code>export PREFIX=/usr/local/$TARGET</code></div></div>
+<h2><span class="mw-headline" id="Step_1_--_Build_and_install_binutils">Step 1 -- Build and install binutils</span></h2>
+<p>Binutils that can process binaries for the target is needed. Create a separate build directory, configure, compile, and then install for target:
+</p>
+<div class="cmd-box"><div><code style="color: #4E9A06; user-select: none; font-weight: bold;">user <span style="color:royalblue;">$</span></code><code>mkdir build &amp;&amp; cd build</code></div><div><code style="color: #4E9A06; user-select: none; font-weight: bold;">user <span style="color:royalblue;">$</span></code><code>../binutils-2.27/configure --target=$TARGET --prefix=$PREFIX --enable-werror=no</code></div><div><code style="color: #4E9A06; user-select: none; font-weight: bold;">user <span style="color:royalblue;">$</span></code><code>make -j8 &amp;&amp; sudo make install</code></div></div>
+<p>The <code>--enable-werror=no</code> option is used to work around failed compiles due to newer versions of GCC generating new warnings. Examine <span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">$PREFIX</span> and see if the binutils for the target has been properly installed.
+</p>
+<h2><span id="Step_2_--_Install_prebuilt_libc_&amp;_headers"></span><span class="mw-headline" id="Step_2_--_Install_prebuilt_libc_.26_headers">Step 2 -- Install prebuilt libc &amp; headers</span></h2>
+<p>The next step, as most cross-compiler creation guides instructs, is to install libc. Unfortunately, we have not figured out a proper way to compile Bionic without Android's (gigantic) build system, so we're just doing a voodoo copy-and-paste. The libc part in this section is expected to get better when we develop a mature solution for building Bionic.
+</p><p>Install <span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">sys-kernel/linux-headers-3.10.73</span> from <a rel="nofollow" class="external text" href="https://github.com/KireinaHoro/android/tree/master/sys-kernel/linux-headers">here</a>. Set up libc and kernel headers.
+</p>
+<div class="cmd-box"><div><code style="color: #4E9A06; user-select: none; font-weight: bold;">user <span style="color:royalblue;">$</span></code><code>sudo emerge -av =sys-kernel/linux-headers-3.10.73</code></div><div><code style="color: #4E9A06; user-select: none; font-weight: bold;">user <span style="color:royalblue;">$</span></code><code>mkdir -p $PREFIX/$TARGET/sys-include</code></div><div><code style="color: #4E9A06; user-select: none; font-weight: bold;">user <span style="color:royalblue;">$</span></code><code>cp -Rv bionic/libc/include/* $PREFIX/$TARGET/sys-include/</code></div><div><code style="color: #4E9A06; user-select: none; font-weight: bold;">user <span style="color:royalblue;">$</span></code><code>for a in linux asm asm-generic; do ln -s /usr/include/$a $PREFIX/$TARGET/sys-include/; done</code></div></div>
+<p>The following object files are needed for a successful generation of the toolchain:
+</p>
+<ul><li><span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">crtbegin_so.o</span>: from NDK</li>
+<li><span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">crtend_so.o</span>: from NDK</li>
+<li><span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">crtbegin_dynamic.o</span>: from NDK</li>
+<li><span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">crtend_android.o</span>: from NDK</li>
+<li><span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">libc.so</span>: from AOSP</li>
+<li><span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">libm.so</span>: from AOSP</li>
+<li><span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">libdl.so</span>: from AOSP</li>
+<li><span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">ld-android.so</span>: from AOSP</li></ul>
+<p>Obtain the above files and place them under <span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">$PREFIX/$TARGET/lib</span> for discovery by the linker.
+</p>
+<h2><span class="mw-headline" id="Step_3_--_Build_and_install_GCC">Step 3 -- Build and install GCC</span></h2>
+<p>The final part is relatively simple. Just compile GCC and install it into the toolchain prefix:
+</p>
+<div class="cmd-box"><div><code style="color: #4E9A06; user-select: none; font-weight: bold;">user <span style="color:royalblue;">$</span></code><code>mkdir build &amp;&amp; cd build</code></div><div><code style="color: #4E9A06; user-select: none; font-weight: bold;">user <span style="color:royalblue;">$</span></code><code>../gcc-4.9/configure --target=$TARGET --prefix=$PREFIX --without-headers --with-gnu-as --with-gnu-ld --enable-languages=c,c++</code></div><div><code style="color: #4E9A06; user-select: none; font-weight: bold;">user <span style="color:royalblue;">$</span></code><code>make -j8 &amp;&amp; sudo make install</code></div></div>
+<h2><span id="Step_4_--_Build_and_verify_&quot;Hello,_world!&quot;"></span><span class="mw-headline" id="Step_4_--_Build_and_verify_.22Hello.2C_world.21.22">Step 4 -- Build and verify &quot;Hello, world!&quot;</span></h2>
+<p>We need to verify that the toolchain is really working by creating executables for our target. Write a simple &quot;Hello, world!&quot; program:
+</p>
+<div class="box-caption"><span class="label" style="margin-right: .5em; background-color: #54487A">FILE</span> <strong><code style="border: none; background: none; color: #54487A; margin-right: .5em;">hello.cc</code></strong><strong></strong></div> <div class="mw-highlight mw-highlight-lang-c++ mw-content-ltr" dir="ltr"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Hello, world!&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p>Compile it with:
+</p>
+<div class="cmd-box"><div><code style="color: #4E9A06; user-select: none; font-weight: bold;">user <span style="color:royalblue;">$</span></code><code>aarch64-linux-android-g++ hello.cc -o hello -pie -static-libgcc -nostdinc++ -I/usr/local/aarch64-linux-android/include/c++/v1 -nodefaultlibs -lc -lm -lc++</code></div></div>
+<p>Explanation for the commandline options used:
+</p>
+<ul><li><code>-pie</code>: Android requires <a rel="nofollow" class="external text" href="https://en.wikipedia.org/wiki/Position-independent_code">Position Independent Executables</a> property for dynamically-linked executables.</li>
+<li><code>-static-libgcc</code>: Android platform does not have <span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">libgcc_s.so</span> available; we'll have to make it statically-linked.</li>
+<li><code>-nostdinc++</code> and <code>-I...</code>: Android uses <span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">libc++</span> as its default STL implementation, and we need this to get the right symbols used by including right C++ headers.
+<ul><li>This suggests that a correct copy of <span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">libcxx</span> headers should be present at the path shown above.</li></ul></li>
+<li><code>-nodefaultlibs</code> and <code>-l...</code>: by default GCC links to <span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">libstdc++</span>, which is not desirable in this case; we manually specify what to consider during the linking process.
+<ul><li>This suggests that <span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">libc++.so</span> should be present in the linker search path.</li></ul></li></ul>
+<h2><span id="What_else?"></span><span class="mw-headline" id="What_else.3F">What else?</span></h2>
+<p>The work is not finished yet on this topic:
+</p>
+<ul><li>We still copy-and-paste <span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">libc</span> object files instead of properly building them separately. Proper packaging of <span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">bionic</span> is needed.</li>
+<li>The toolchain build process needs integrating with <span style="font-family: monospace; font-size: 95%; font-weight: bold;" class="tripleclick-separator">crossdev</span>, Gentoo's flexible cross-compile toolchain generator.</li></ul>
+<!-- 
+NewPP limit report
+Cached time: 20251001164313
+Cache expiry: 86400
+Dynamic content: false
+Complications: []
+[SMW] In‐text annotation parser time: 0.001 seconds
+CPU time usage: 0.039 seconds
+Real time usage: 0.044 seconds
+Preprocessor visited node count: 884/1000000
+Post‐expand include size: 21422/4194304 bytes
+Template argument size: 5836/4194304 bytes
+Highest expansion depth: 11/40
+Expensive parser function count: 0/150
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 971/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%   25.585      1 -total
+ 61.61%   15.762      5 Template:Cmd
+ 37.82%    9.677      5 Template:GenericCmd
+ 19.57%    5.006      1 Template:FileBox
+ 15.37%    3.933     13 Template:GenericCmd/Line
+ 12.79%    3.273     23 Template:C
+ 11.44%    2.927      1 Template:PreBox
+  9.55%    2.444     14 Template:=
+-->
+
+<!-- Saved in parser cache with key gentoo?hwiki:pcache:idhash:230558-0!canonical and timestamp 20251001164313 and revision id 1075940
+ -->
+</div></div><div class="printfooter">
+Retrieved from "<a dir="ltr" href="https://wiki.gentoo.org/index.php?title=Android/SharkBait/Building_a_toolchain_for_aarch64-linux-android&amp;oldid=1075940">https://wiki.gentoo.org/index.php?title=Android/SharkBait/Building_a_toolchain_for_aarch64-linux-android&amp;oldid=1075940</a>"</div>
+<div id="catlinks" class="catlinks" data-mw="interface"><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="/wiki/Special:Categories" title="Special:Categories">Category</a>: <ul><li><a href="/wiki/Category:Android" title="Category:Android">Android</a></li></ul></div></div>						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+			<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 col-md-offset-2 col-md-7">
+											<div class="spacer"></div>
+						<ul id="f-list">
+							<li id="lastmod>"> This page was last edited on 6 July 2022, at 23:29.</li><li id="privacy>"><a href="/wiki/Gentoo_Wiki:Privacy_policy" class="mw-redirect" title="Gentoo Wiki:Privacy policy">Privacy policy</a></li><li id="about>"><a href="/wiki/Gentoo_Wiki:About" title="Gentoo Wiki:About">About Gentoo Wiki</a></li><li id="disclaimer>"><a href="/wiki/Gentoo_Wiki:General_disclaimer" title="Gentoo Wiki:General disclaimer">Disclaimers</a></li>						</ul>
+									</div>
+				<div class="col-xs-12 col-md-3">
+					<!-- No questions or comments, the Wiki has enough information on how to contact us. -->
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-3 col-md-2">
+					<ul class="footerlinks three-icons">
+						<li><a href="https://twitter.com/gentoo" title="@Gentoo on Twitter"><span class="fa fa-twitter fa-fw"></span></a></li>
+						<li><a href="https://www.facebook.com/gentoo.org" title="Gentoo on Facebook"><span class="fa fa-facebook fa-fw"></span></a></li>
+						<li></li>
+					</ul>
+				</div>
+				<div class="col-xs-9 col-md-9">
+					<strong>&copy; 2001&ndash;2025 Gentoo Authors</strong><br />
+					<small>
+						Gentoo is a trademark of the Gentoo Foundation, Inc. and of Förderverein Gentoo e.V.
+						The contents of this document, unless otherwise expressly stated, are licensed under the
+						<a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="license">CC-BY-SA-4.0</a> license.
+						The <a href="https://www.gentoo.org/inside-gentoo/foundation/name-logo-guidelines.html">Gentoo Name and Logo Usage Guidelines</a> apply.
+					</small>
+				</div>
+			</div>
+		</div>
+	</footer>
+	
+<script>
+function defer(method) {
+    if (window.jQuery) {
+        method();
+    } else {
+        setTimeout(function() { defer(method) }, 50);
+    }
+}
+defer(function() { mw.loader.load( 'https://assets.gentoo.org/tyrian/bootstrap.min.js'); });
+</script>
+
+<script>(RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgPageParseReport":{"smw":{"limitreport-intext-parsertime":0.001},"limitreport":{"cputime":"0.039","walltime":"0.044","ppvisitednodes":{"value":884,"limit":1000000},"postexpandincludesize":{"value":21422,"limit":4194304},"templateargumentsize":{"value":5836,"limit":4194304},"expansiondepth":{"value":11,"limit":40},"expensivefunctioncount":{"value":0,"limit":150},"unstrip-depth":{"value":0,"limit":20},"unstrip-size":{"value":971,"limit":5000000},"timingprofile":["100.00%   25.585      1 -total"," 61.61%   15.762      5 Template:Cmd"," 37.82%    9.677      5 Template:GenericCmd"," 19.57%    5.006      1 Template:FileBox"," 15.37%    3.933     13 Template:GenericCmd/Line"," 12.79%    3.273     23 Template:C"," 11.44%    2.927      1 Template:PreBox","  9.55%    2.444     14 Template:="]},"cachereport":{"timestamp":"20251001164313","ttl":86400,"transientcontent":false}}});mw.config.set({"wgBackendResponseTime":71});});</script></body></html>

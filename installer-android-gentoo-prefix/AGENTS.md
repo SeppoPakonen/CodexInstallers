@@ -4,7 +4,10 @@ Context
   - Previous: adb over Wi‑Fi at 192.168.1.102:39929.
   - Current device: 192.168.1.107, initial port 40425, updated to 37021.
 - Writable dirs: /data/local/tmp (exec), /sdcard (FUSE, typically noexec).
-- Tools on device: /system/bin/sh and curl; no bash/make/cc.
+ - Tools on device: /system/bin/sh and curl; no bash/make/cc.
+
+Common Practices
+- Inherits repo-wide guidance from the root `AGENTS.md` for remote session hygiene (tmux/transcripts), destructive-op confirmations, filesystem identifiers, and documentation/logging conventions. Android-specific constraints and procedures below override as needed.
 
 User Goals
 - Use install path rooted at `/sdcard/gentoo`.
@@ -96,10 +99,4 @@ LineageOS + SELinux (Chroot Notes)
 
 
 Book Logging Protocol
-- Keep a dual record under `Book/` for every meaningful change:
-  - Human-readable chapter: `Book/%02d - <Title>.md` written in first person as "I", referring to the user respectfully as one of: Spearhead, Captain, Curator, Director, Chief, or Ringleader (context dependent).
-  - Compact agent summary: `Book/<Title>.md` with concise bullets meant for quick scanning by agents.
-- Update these files continuously; do not let them drift from reality. Favor small, frequent commits/patches.
-- Use the active session date in `Book/ChangeLog-YYYY-MM-DD.md` when adding timeline notes.
-- Titles should reflect concrete actions or decisions (e.g., "Non-Persistent Setup and Findings").
-- Preserve prior chapters; append new ones with the next sequential number.
+- Follows the repo-wide pattern described in root `AGENTS.md` (Documentation & Logs). Android-specific nuance: write human chapters in first person ("I") and, where appropriate, address the user with titles such as Spearhead, Captain, Curator, Director, Chief, or Ringleader (context dependent). Favor small, frequent updates and keep logs in sync with actual progress.

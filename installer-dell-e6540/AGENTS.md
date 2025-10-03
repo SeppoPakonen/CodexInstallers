@@ -4,6 +4,8 @@ This file defines the end-to-end plan and commands for installing Gentoo on a De
 
 Scope: root of this repository. These instructions govern the remote install workflow performed by the agent.
 
+Common Practices: This runbook inherits repo-wide guidance from `AGENTS.md` at the repo root — see sections "Remote Session Practices", "Destructive Ops Checklist", "Filesystem Identifiers", and "Documentation & Logs".
+
 ## Host Details
 - Model: Dell Latitude E6540 (Haswell, UEFI capable)
 - Target OS: Gentoo Linux (amd64)
@@ -14,10 +16,7 @@ Scope: root of this repository. These instructions govern the remote install wor
   - Install target is the internal drive (confirm exact device before proceeding).
 
 ## Safety and Approvals
-- Use `tmux` immediately after logging in to survive disconnects.
-- All partitioning/formatting steps are destructive and require confirmation of the target disk device (e.g., `/dev/sda`, `/dev/nvme0n1`).
-- Keep a transcript: `script -aq /root/gentoo-install.log` inside tmux (optional but recommended).
-- Use UUIDs in `/etc/fstab` to avoid device name drift.
+See root AGENTS.md for tmux/transcript practices, destructive-op confirmation, and UUID usage. This runbook enforces explicit disk confirmation before partitioning.
 
 ## Defaults (per user selection)
 - Init: systemd

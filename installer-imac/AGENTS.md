@@ -4,6 +4,8 @@ This file defines the exact plan and commands for installing Gentoo on an iMac A
 
 Scope: root of this repo. These instructions govern this iMac install.
 
+Common Practices: This runbook inherits repo-wide guidance from the root `AGENTS.md` — see "Remote Session Practices", "Destructive Ops Checklist", "Filesystem Identifiers", and "Documentation & Logs". Device-specific steps below may further constrain the flow.
+
 ## Host Details
 - Model: Apple iMac A1228 (2007-era, 64-bit CPU, often 32-bit EFI; assume Legacy BIOS/CSM boot works as with BionicPup)
 - Live env: BionicPup with dropbear SSH

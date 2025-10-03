@@ -4,13 +4,10 @@ I attempted to install the base packages in the rooted Alpine chroot but ran int
 
 State
 - Alpine chroot is healthy and online; DNS set; `apk update` previously worked.
-- `apk add` currently blocked by a lingering DB lock.
+- RESOLVED: `apk add` was blocked by a lingering DB lock; cleared by removing `/lib/apk/db/lock` and re-installing `apk-tools`.
 
 Next
-- Wait a short period and retry `apk add`.
-- If persistent, inspect and clear the lock inside chroot: `rm -f /lib/apk/db/lock && apk fix --no-progress apk-tools` then re-run the base install set.
-- Once packages are installed, proceed with the Prefix bootstrap using `EPREFIX=/data/local/tmp/gentoo` and `DISTDIR=/sdcard/gentoo/distfiles`.
+- Proceed with the Prefix bootstrap using `EPREFIX=/data/local/tmp/gentoo` and `DISTDIR=/sdcard/gentoo/distfiles` now that base tools are installed in Alpine.
 
 Respectfully,
 — I
-

@@ -24,7 +24,7 @@ Mounts used during install
 - /proc, /sys, /dev, /run bind-mounted into /mnt/gentoo
 
 Base system (to be replaced)
-- Current root contains the amd64/x32 systemd stage; this install will be abandoned in favor of pure 32-bit i686.
+- Current root contains the amd64/x32 systemd stage; this install will be abandoned in favor of pure 32-bit i686 with OpenRC.
 - Portage tree already synced via webrsync and can be reused after untarring the new stage.
 - Locale/timezone currently set to fi_FI.UTF-8 and UTC—reuse if desired during reinstall.
 - make.conf currently tuned for x32; plan to regenerate for i686 profile (see NOTES below).
@@ -51,8 +51,8 @@ Kernel
 Next steps (i686 reinstall plan)
 1) Reboot back into the minimal install environment (or BionicPup) and re-mount `/mnt/gentoo` as needed.
 2) Remove or archive the current root (`rm -rf /mnt/gentoo/*`) after double-checking mounts.
-3) Download the latest i686 systemd stage3 (e.g. `https://distfiles.gentoo.org/releases/x86/autobuilds/current-stage3-i686-systemd/stage3-i686-systemd-<date>.tar.xz`) and extract to `/mnt/gentoo`.
-4) adopt the `default/linux/x86/23.0/systemd` profile; adjust `/etc/portage/make.conf` for i686 (see NOTES.md for new COMMON_FLAGS and ACCEPT_KEYWORDS suggestions).
+3) Download the latest i686 OpenRC stage3 (e.g. `https://distfiles.gentoo.org/releases/x86/autobuilds/current-stage3-i686-openrc/stage3-i686-openrc-<date>.tar.xz`) and extract to `/mnt/gentoo`.
+4) adopt the `default/linux/x86/23.0/i686/openrc` profile; adjust `/etc/portage/make.conf` for i686 (see NOTES.md for new COMMON_FLAGS and ACCEPT_KEYWORDS suggestions).
 5) Reinstall kernel (recommended: `sys-kernel/gentoo-kernel-bin` i686 variant, or `gentoo-sources` + `genkernel`), then rerun `lilo -v` inside chroot.
 6) Update `/etc/fstab` with new UUIDs if they change (current UUIDs above still valid if partitions untouched).
 7) Optionally keep rEFInd or remove; ensure rEFIt still default loader if desired.

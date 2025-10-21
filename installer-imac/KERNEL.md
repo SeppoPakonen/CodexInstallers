@@ -23,7 +23,7 @@ Key config targets (menuconfig)
   - Processor type: `CONFIG_MCORE2=y`
   - `CONFIG_SMP=y`, `CONFIG_X86_LOCAL_APIC=y`, `CONFIG_X86_MCE=y`
   - Disable `CONFIG_X86_X32` / `CONFIG_X86_64`
-- Core/systemd requirements
+- Core/OpenRC requirements
   - `CONFIG_DEVTMPFS=y`, `CONFIG_DEVTMPFS_MOUNT=y`
   - `CONFIG_CGROUPS=y`, `CONFIG_NAMESPACES=y`, `CONFIG_USER_NS=y`
   - `CONFIG_FHANDLE=y`, `CONFIG_FANOTIFY=y`, `CONFIG_INOTIFY_USER=y`
@@ -79,4 +79,5 @@ Notes & troubleshooting
 - PAE (`CONFIG_X86_PAE`) slightly increases overhead but allows using >3 GiB swap effectively; keep enabled for compatibility.
 - Taint sources (e.g. proprietary Broadcom `wl`) not needed—stick to b43 for simplicity.
 - No more x32 ABI: remove stale options or package.env entries referencing x32.
+- When using OpenRC instead of systemd: ensure the kernel config options support traditional init systems.
 - After any kernel install, double-check `/etc/lilo.conf` to ensure the `image` paths are correct before running `lilo -v`.

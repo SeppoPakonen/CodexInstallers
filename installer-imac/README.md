@@ -8,4 +8,6 @@ Use these docs to resume or repeat the process reliably.
 - See KERNEL.md for kernel build options and how to proceed with gentoo‑sources.
 - See BOOT.md for details on rEFInd and Syslinux setup and how to finalize boot configs after installing a kernel.
 
+IMPORTANT: The installation was interrupted and we are now reinstalling with i686 OpenRC stage3 to ensure compatibility with the 32-bit EFI environment of this iMac.
+
 When ready to continue the install, resume from the steps in STATUS.md → Next Steps.

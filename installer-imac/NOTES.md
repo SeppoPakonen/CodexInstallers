@@ -6,7 +6,7 @@ Locale & Time
 - Timezone target: UTC (`/etc/localtime` via timezone-data)
 
 Networking (post‑boot)
-- Optional: `emerge net-misc/networkmanager && systemctl enable NetworkManager`
+- Optional: `emerge net-misc/networkmanager && rc-update add NetworkManager default`
 
 Users & Sudo (optional)
 ```
@@ -41,8 +41,8 @@ Known blockers/quirks
   - LILO installed to MBR; rerun `lilo -v` after every kernel update.
 
 i686 reinstall checklist
-1. Stage3: `https://distfiles.gentoo.org/releases/x86/autobuilds/current-stage3-i686-systemd/stage3-i686-systemd-<date>.tar.xz`
-2. Profile: `default/linux/x86/23.0/systemd` (or latest) via `eselect profile`.
+1. Stage3: `https://distfiles.gentoo.org/releases/x86/autobuilds/current-stage3-i686-openrc/stage3-i686-openrc-<date>.tar.xz`
+2. Profile: `default/linux/x86/23.0/i686/openrc` (or latest) via `eselect profile`.
 3. `make.conf` baseline:
 ```
 COMMON_FLAGS="-O2 -pipe -march=native"

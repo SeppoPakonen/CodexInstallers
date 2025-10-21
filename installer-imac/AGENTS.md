@@ -13,8 +13,9 @@ Common Practices: This runbook inherits repo-wide guidance from the root `AGENTS
 - Target disk: `/dev/sda` (confirmed by user)
 - Partitioning: GPT with ESP + BIOS boot + swap + root
 - Filesystems: ext4 (root), linux-swap (2G), additional 4G swapfile `/swap.4g`
-- Init: systemd
-- Stage3: x32 systemd tarball (exact URL below)
+- Architecture: i686 (32-bit)
+- Init: OpenRC
+- Stage3: i686 OpenRC tarball (exact URL below)
 
 Important: All partitioning/formatting is destructive. Double-check `/dev/sda`.
 
@@ -22,9 +23,9 @@ Important: All partitioning/formatting is destructive. Double-check `/dev/sda`.
 1) Connect, verify environment
 2) Partition `/dev/sda` (GPT) — ESP + BIOS boot + 2G swap + rest ext4
 3) Make filesystems, mount ESP + root, and enable swap
-4) Download and extract stage3 (x32 + systemd)
+4) Download and extract stage3 (i686 + OpenRC)
 5) Chroot and bootstrap Portage
-6) Select x32 systemd profile, locale/time
+6) Select i686 OpenRC profile, locale/time
 7) Install distribution kernel and firmware
 8) Create fstab (ESP, root, swap + 4G swapfile)
 9) Install GRUB for both EFI (i386-efi) and BIOS (i386-pc)
@@ -90,11 +91,11 @@ mkdir -p /mnt/gentoo/boot/efi
 mount "$ESP" /mnt/gentoo/boot/efi
 ```
 
-### 4) Fetch and extract stage3 (x32 systemd)
+### 4) Fetch and extract stage3 (i686 OpenRC)
 Use the exact tarball provided by the user:
 ```
 cd /mnt/gentoo
-STAGE_URL="https://distfiles.gentoo.org/releases/amd64/autobuilds/20250928T160345Z/stage3-x32-systemd-20250928T160345Z.tar.xz"
+STAGE_URL="https://distfiles.gentoo.org/releases/x86/autobuilds/current-stage3-i686-openrc/stage3-i686-openrc-<date>.tar.xz"
 wget -O stage3.tar.xz "$STAGE_URL"
 tar xpvf stage3.tar.xz --xattrs-include='*.*' --numeric-owner
 ```
@@ -124,22 +125,24 @@ cp /usr/share/portage/config/repos.conf /etc/portage/repos.conf/gentoo.conf
 emerge-webrsync || emerge --sync
 ```
 
-### 6) Profile, locales, time (x32 + systemd)
-Select an x32 systemd profile (exact index may vary):
+### 6) Profile, locales, time (i686 + OpenRC)
+Select an i686 OpenRC profile (exact index may vary):
 ```
 eselect profile list | nl -ba
-# Look for: default/linux/amd64/x32/*/systemd (e.g., 17.0 or 23.0 as available)
+# Look for: default/linux/x86/23.0/i686/openrc (or latest version available)
 eselect profile set <index>
 ```
 
 Baseline build settings (keep light for 2GB RAM):
 ```
 cat >> /etc/portage/make.conf <<'EOF'
-COMMON_FLAGS="-O2 -pipe"
+COMMON_FLAGS="-O2 -pipe -march=i686"
 CFLAGS="${COMMON_FLAGS}"
 CXXFLAGS="${COMMON_FLAGS}"
+CHOST="i686-pc-linux-gnu"
 MAKEOPTS="-j2"
 GENTOO_MIRRORS="https://mirror.rackspace.com/gentoo/ https://mirror.init7.net/gentoo/"
+ACCEPT_KEYWORDS="x86"
 EOF
 ```
 
@@ -198,7 +201,7 @@ EOF
 Networking (optional now; can be configured post-boot):
 ```
 emerge --ask net-misc/networkmanager
-systemctl enable NetworkManager.service
+rc-update add NetworkManager default
 ```
 
 Optional user and sudo:
